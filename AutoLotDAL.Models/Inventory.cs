@@ -11,12 +11,15 @@ namespace AutoLotDAL.Models
     public partial class Inventory : EntityBase
     {
         [StringLength(50)]
+        [Required]
         public string Make { get; set; }
 
         [StringLength(50)]
+        [Required]
         public string Color { get; set; }
 
         [StringLength(50)]
+        [Required]
         public string PetName { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }

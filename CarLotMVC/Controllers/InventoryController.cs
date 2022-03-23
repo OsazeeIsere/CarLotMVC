@@ -50,16 +50,22 @@ namespace CarLotMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Make,Color,PetName,Timestamp")] Inventory inventory)
+        public ActionResult Create([Bind(Include = "Make,Color,PetName")] Inventory inventory)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View(inventory);
+            try
             {
                 _repo.Add(inventory);
-                _repo.Save(inventory);
-                return RedirectToAction("Index");
+              //  _repo.Save(inventory);
+             //   return RedirectToAction("Index");
             }
+            catch(Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, $@"Unable to create record: {ex.Message}");
+                return View(inventory);
 
-            return View(inventory);
+            }
+            return RedirectToAction("Index");
         }
 
         // GET: Inventory/Edit/5
