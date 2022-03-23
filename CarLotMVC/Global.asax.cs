@@ -17,7 +17,7 @@ namespace CarLotMVC
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            Database.SetInitializer(new MyDataInitializer()); // This Line of code should be removed before deployment
+         //   Database.SetInitializer(new MyDataInitializer()); // This Line of code should be removed before deployment
         }
     }
 }
