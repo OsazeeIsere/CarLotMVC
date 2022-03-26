@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 using System.ComponentModel.DataAnnotations.Schema;
 using AutoLotDAL.Models.Base;
+using AutoLotDAL.Models.MetaData;
 
 namespace AutoLotDAL.Models
 {
+    [MetadataType(typeof(InventoryMetaData))]
    public partial class Inventory:EntityBase
    {
         [NotMapped]

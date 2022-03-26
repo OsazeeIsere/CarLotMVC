@@ -90,13 +90,23 @@ namespace CarLotMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Make,Color,PetName,Timestamp")] Inventory inventory)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View(inventory);
+            try
             {
                 // _repo.(inventory).State = EntityState.Modified;
                 _repo.Save(inventory);
-                return RedirectToAction("Index");
             }
-            return View(inventory);
+            catch(DbUpdateConcurrencyException ex)
+            {
+                ModelState.AddModelError(string.Empty, $@"Unable to save the record. Another user has updated it.{ex.Message}");
+                return View(inventory);
+            }
+            catch(Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, $@"Unable to save the record.{ex.Message}");
+                return View(inventory);
+            }
+            return RedirectToAction("Index");
         }
 
         // GET: Inventory/Delete/5
@@ -117,11 +127,22 @@ namespace CarLotMVC.Controllers
         // POST: Inventory/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult Delete([Bind(Include ="Id,Timestamp")]Inventory inventory)
         {
-            Inventory inventory = _repo.GetOne(id);
-           // db.Cars.Remove(inventory);
-         //   db.SaveChanges();
+            try
+            {
+                _repo.Delete(inventory);
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                ModelState.AddModelError(string.Empty, $@"Unable to delete the record. Another user has updated it.{ex.Message}");
+                return View(inventory);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, $@"Unable to delete the record.{ex.Message}");
+                return View(inventory);
+            }
             return RedirectToAction("Index");
         }
 
